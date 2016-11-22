@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<!--*************************HDFS HA**************************************-->
+  <property>
+    <name>dfs.nameservices</name>
+    <value>csdc</value>
+  </property>
+  <property>
+    <name>dfs.ha.namenodes.csdc</name>
+    <value>nn1,nn2</value>
+  </property>
+  <!--指定NameNode的hostname:port-->
+  <property>
+    <name>dfs.namenode.rpc-address.csdc.nn1</name>
+    <value>hadoop2-master1:8020</value>
+  </property>
+  <property>
+    <name>dfs.namenode.rpc-address.csdc.nn2</name>
+    <value>hadoop2-master2:8020</value>
+  </property>
+  <!--指定NameNode的HTTP服务器端口-->
+  <property>
+    <name>dfs.namenode.http-address.csdc.nn1</name>
+    <value>hadoop2-master1:50070</value>
+  </property>
+  <property>
+    <name>dfs.namenode.http-address.csdc.nn2</name>
+    <value>hadoop2-master2:50070</value>
+  </property>
+  <!--the URI which identifies the group of JNs where the NameNodes will write/read edits-->
+  <property>
+    <name>dfs.namenode.shared.edits.dir</name>
+    <value>qjournal://hadoop2-slaver1:8485;hadoop2-slaver2:8485;hadoop2-slaver3:8485/csdc</value>
+  </property>
+  <!--the Java class that HDFS clients use to contact the Active NameNode（HDFS Client连接NameNode所使用的类，Client可以通过此类来判定哪个NameNode为Alive，并与它保持通信）-->
+  <property>
+    <name>dfs.client.failover.proxy.provider.csdc</name>
+    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+  </property>
+  <!--a list of scripts or Java classes which will be used to fence the Active NameNode during a failover（指定Failover期间杀死可能存活的NameNode的方法）-->
+  <property>
+    <name>dfs.ha.fencing.methods</name>
+    <value>sshfence</value>
+  </property>
+  <property>
+    <name>dfs.ha.fencing.ssh.private-key-files</name>
+    <value>/home/hadoop/.ssh/id_rsa</value>
+  </property>
+  <!--the path where the JournalNode daemon will store its local state-->
+  <property>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/opt/hadoop-2.7.2/data/dfs/journalnode</value>
+  </property>
+
+  <!--This specifies that the cluster should be set up for automatic failover-->
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+
+  <!--**************************************************************************-->
+
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>file:///opt/hadoop-2.7.2/data/dfs/name</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>file:///opt/hadoop-2.7.2/data/dfs/data</value>
+  </property>
+  <property>
+    <name>dfs.replication</name>
+    <value>3</value>
+  </property>
+</configuration>
