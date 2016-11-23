@@ -9,23 +9,19 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 /**
- * 本地模式运行MapReduce，指定输入输出均为HDFS
+ * 本地模式运行MapReduce，指定输入输出均为本地文件
  * 
  * @author pengliang
  *
  */
-public class WordCountRunner {
+public class WordCountRunnerLocal {
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
-		conf.addResource("conf/core-default.xml");conf.addResource("conf/core-site.xml");
-		conf.addResource("conf/hdfs-default.xml");conf.addResource("conf/hdfs-site.xml");
-		conf.addResource("conf/mapred-default.xml");conf.addResource("conf/mapred-site.xml");
-		conf.addResource("conf/yarn-default.xml");conf.addResource("conf/yarn-site.xml");
 		
 		Job job = Job.getInstance(conf);
 		
 		// 设置job中的资源所在的Jar包
-		job.setJarByClass(WordCountRunner.class);
+		job.setJarByClass(WordCountRunnerLocal.class);
 		
 		job.setMapperClass(WordCountMapper.class);
 		job.setReducerClass(WordCountReducer.class);
@@ -35,8 +31,8 @@ public class WordCountRunner {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(LongWritable.class);
 		
-		FileInputFormat.setInputPaths(job, "hdfs://csdc/test/input");
-		FileOutputFormat.setOutputPath(job, new Path("hdfs://csdc/test/output"));
+		FileInputFormat.setInputPaths(job, "c:/wc/input");
+		FileOutputFormat.setOutputPath(job, new Path("c:/wc/output"));
 		
 		boolean res = job.waitForCompletion(true);
 		System.exit(res ? 0 : 1);
