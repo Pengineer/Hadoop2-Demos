@@ -8,7 +8,11 @@ import org.apache.hadoop.fs.FileSystem;
 
 public class HadoopTools {
 	
-	public static Configuration getConf() {
+	public static Configuration getLocalConf() {
+		return new Configuration();
+	}
+	
+	public static Configuration getClusterConf() {
 		Configuration conf = new Configuration();
 		conf.addResource("conf/core-default.xml");conf.addResource("conf/core-site.xml");
 		conf.addResource("conf/hdfs-default.xml");conf.addResource("conf/hdfs-site.xml");
@@ -18,7 +22,7 @@ public class HadoopTools {
 	} 
 	
 	public static FileSystem getFileSystem() throws IOException {
-		return FileSystem.get(HadoopTools.getConf());
+		return FileSystem.get(HadoopTools.getClusterConf());
 	}
 	
 	public static FileSystem getFileSystem(Configuration conf) throws IOException {

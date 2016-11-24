@@ -9,7 +9,9 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 /**
- * 本地模式运行MapReduce，指定输入输出均为本地文件
+ * 本地模式运行MapReduce（MR在本地执行）
+ * 
+ * 输入输出文件可以指定为本地，也可以指定为HDFS
  * 
  * @author pengliang
  *
@@ -31,8 +33,15 @@ public class WordCountRunnerLocal {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(LongWritable.class);
 		
+		// 方式一
 		FileInputFormat.setInputPaths(job, "c:/wc/input");
 		FileOutputFormat.setOutputPath(job, new Path("c:/wc/output"));
+		
+		// 方式二
+		/*
+		 FileInputFormat.setInputPaths(job, "hdfs://192.168.88.104:8020/test/input");
+		 FileOutputFormat.setOutputPath(job, new Path("hdfs://192.168.88.104:8020/test/output"));
+		 */
 		
 		boolean res = job.waitForCompletion(true);
 		System.exit(res ? 0 : 1);
