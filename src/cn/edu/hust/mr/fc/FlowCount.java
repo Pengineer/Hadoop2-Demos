@@ -70,6 +70,9 @@ public class FlowCount {
 		job.setPartitionerClass(AreaPartition.class);
 		/**
 		 * 设置reduce task的数量，要跟AreaPartition返回的partition个数匹配
+		 * 如果Reduce task的数量比partition分组数多，就会产生多余的几个空文件
+		 * 如果Reduce task的数量比partition分组数少，就会发生异常，因为有一些key没有对应reducetask接收
+		 * 	（但是如果Reduce task的数量如果为1，那么就不存在partition分组问题，程序可正常运行）
 		 */
 		job.setNumReduceTasks(6);
 		

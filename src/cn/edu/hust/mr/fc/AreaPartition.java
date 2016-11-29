@@ -27,7 +27,8 @@ public class AreaPartition<KEY, VALUE> extends Partitioner<KEY, VALUE>{
 	@Override
 	public int getPartition(KEY key, VALUE value, int numPartitions) {
 		Integer result = paraMap.get(key.toString().substring(0,3));
-		return result == null ? 4 : result;
+		// 分6组
+		return result == null ? 5 : result;
 	}
 
 }
