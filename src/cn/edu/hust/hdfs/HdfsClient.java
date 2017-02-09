@@ -24,24 +24,25 @@ public class HdfsClient {
 		 * 
 		 */
 		Configuration conf = new Configuration();
-		conf.addResource("conf/core-default.xml");conf.addResource("conf/core-site.xml");
-		conf.addResource("conf/hdfs-default.xml");conf.addResource("conf/hdfs-site.xml");
-		conf.addResource("conf/mapred-default.xml");conf.addResource("conf/mapred-site.xml");
-		conf.addResource("conf/yarn-default.xml");conf.addResource("conf/yarn-site.xml");
+		conf.addResource("conf/dmss/core-default.xml");conf.addResource("conf/dmss/core-site.xml");
+		conf.addResource("conf/dmss/hdfs-default.xml");conf.addResource("conf/dmss/hdfs-site.xml");
+		conf.addResource("conf/dmss/mapred-default.xml");conf.addResource("conf/dmss/mapred-site.xml");
+		conf.addResource("conf/dmss/yarn-default.xml");conf.addResource("conf/dmss/yarn-site.xml");
 		try {
 			/**
 			 * 根据core-site.xml中的fs.defaultFS获取文件系统。（如果是file:\\，则返回本地文件系统）
 			 */
 //			fs = FileSystem.get(conf);
-			fs = FileSystem.get(new URI("hdfs://csdc"), conf, "hadoop"); // 指定Client端用户（HDFS的权限检查机制并不严格）
+//			fs = FileSystem.get(new URI("hdfs://csdc"), conf, "hadoop"); // 指定Client端用户（HDFS的权限检查机制并不严格）
+			fs = FileSystem.get(new URI("hdfs://dmss"), conf, "root"); // 指定Client端用户（HDFS的权限检查机制并不严格）
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static void main(String[] args) throws Exception {
-//		uploadToHDFS();
-		downloadFromHDFS();
+		uploadToHDFS();
+//		downloadFromHDFS();
 //		deleteFile();
 //		deleteDir();
 //		mkdirs();
@@ -51,9 +52,9 @@ public class HdfsClient {
 	
 	public static boolean uploadToHDFS() {
 		try {
-			Path destFile = new Path("hdfs://csdc/test/upload/test.doc");
+			Path destFile = new Path("hdfs://dmss/test1/test.doc");
 			FSDataOutputStream os = fs.create(destFile);
-			FileInputStream is = new FileInputStream("c:\\test.doc");
+			FileInputStream is = new FileInputStream("c:\\general_app_2009_10762_20090603205322796.doc");
 			IOUtils.copy(is, os);
 		} catch (Exception e) {
 			e.printStackTrace();
